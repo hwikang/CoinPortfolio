@@ -13,6 +13,11 @@
 		F8A56DD42C53800B00111E08 /* Portfolio.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F8A56DD22C53800B00111E08 /* Portfolio.xcdatamodeld */; };
 		F8A56DD62C53800C00111E08 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F8A56DD52C53800C00111E08 /* Assets.xcassets */; };
 		F8A56DE42C53800C00111E08 /* PortfolioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A56DE32C53800C00111E08 /* PortfolioTests.swift */; };
+		F8A56E222C5383D300111E08 /* CoinListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A56E212C5383D300111E08 /* CoinListItem.swift */; };
+		F8A56E242C53842B00111E08 /* CoinListUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A56E232C53842B00111E08 /* CoinListUsecase.swift */; };
+		F8A56E282C53848700111E08 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A56E272C53848700111E08 /* NetworkError.swift */; };
+		F8A56E2A2C53849E00111E08 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A56E292C53849E00111E08 /* CoreDataError.swift */; };
+		F8A56E2D2C53850F00111E08 /* CoinListRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A56E2C2C53850F00111E08 /* CoinListRepositoryProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +48,11 @@
 		F8A56DDF2C53800C00111E08 /* PortfolioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PortfolioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8A56DE32C53800C00111E08 /* PortfolioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioTests.swift; sourceTree = "<group>"; };
 		F8A56DE92C53800C00111E08 /* PortfolioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PortfolioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8A56E212C5383D300111E08 /* CoinListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinListItem.swift; sourceTree = "<group>"; };
+		F8A56E232C53842B00111E08 /* CoinListUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinListUsecase.swift; sourceTree = "<group>"; };
+		F8A56E272C53848700111E08 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		F8A56E292C53849E00111E08 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
+		F8A56E2C2C53850F00111E08 /* CoinListRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinListRepositoryProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +105,7 @@
 				F8A56DC92C53800B00111E08 /* AppDelegate.swift */,
 				F8A56DCB2C53800B00111E08 /* SceneDelegate.swift */,
 				F8A56DCD2C53800B00111E08 /* ViewController.swift */,
+				F8A56E202C5383B200111E08 /* Domain */,
 				F8A56DD52C53800C00111E08 /* Assets.xcassets */,
 				F8A56DDA2C53800C00111E08 /* Info.plist */,
 				F8A56DD22C53800B00111E08 /* Portfolio.xcdatamodeld */,
@@ -108,6 +119,42 @@
 				F8A56DE32C53800C00111E08 /* PortfolioTests.swift */,
 			);
 			path = PortfolioTests;
+			sourceTree = "<group>";
+		};
+		F8A56E202C5383B200111E08 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				F8A56E2B2C5384EF00111E08 /* RepositoryProtocol */,
+				F8A56E252C53847600111E08 /* Entity */,
+				F8A56E262C53847D00111E08 /* Usecase */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		F8A56E252C53847600111E08 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				F8A56E212C5383D300111E08 /* CoinListItem.swift */,
+				F8A56E272C53848700111E08 /* NetworkError.swift */,
+				F8A56E292C53849E00111E08 /* CoreDataError.swift */,
+			);
+			path = Entity;
+			sourceTree = "<group>";
+		};
+		F8A56E262C53847D00111E08 /* Usecase */ = {
+			isa = PBXGroup;
+			children = (
+				F8A56E232C53842B00111E08 /* CoinListUsecase.swift */,
+			);
+			path = Usecase;
+			sourceTree = "<group>";
+		};
+		F8A56E2B2C5384EF00111E08 /* RepositoryProtocol */ = {
+			isa = PBXGroup;
+			children = (
+				F8A56E2C2C53850F00111E08 /* CoinListRepositoryProtocol.swift */,
+			);
+			path = RepositoryProtocol;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,9 +287,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				F8A56DD42C53800B00111E08 /* Portfolio.xcdatamodeld in Sources */,
+				F8A56E282C53848700111E08 /* NetworkError.swift in Sources */,
 				F8A56DCE2C53800B00111E08 /* ViewController.swift in Sources */,
+				F8A56E2D2C53850F00111E08 /* CoinListRepositoryProtocol.swift in Sources */,
+				F8A56E2A2C53849E00111E08 /* CoreDataError.swift in Sources */,
+				F8A56E242C53842B00111E08 /* CoinListUsecase.swift in Sources */,
 				F8A56DCA2C53800B00111E08 /* AppDelegate.swift in Sources */,
 				F8A56DCC2C53800B00111E08 /* SceneDelegate.swift in Sources */,
+				F8A56E222C5383D300111E08 /* CoinListItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
