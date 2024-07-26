@@ -9,5 +9,5 @@ import Foundation
 
 public struct NetworkResponse<T: Decodable>: Decodable {
     let success: Bool
-    let data: T
+    let data: T?
 }

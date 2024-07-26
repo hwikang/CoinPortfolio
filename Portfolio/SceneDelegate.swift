@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let coinVM = CoinListViewModel(usecase: coinUC)
         let coinVC = CoinListViewController(viewModel: coinVM)
         window?.backgroundColor = .white
-        window?.rootViewController = mapVC
+        window?.rootViewController = coinVC
         window?.makeKeyAndVisible()
     }
 

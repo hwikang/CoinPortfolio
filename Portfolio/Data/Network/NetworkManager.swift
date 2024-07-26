@@ -16,7 +16,7 @@ final public class NetworkManager {
     }()
 
     func fetchData<T:Decodable> (url: String, method: HTTPMethod, parameters: Parameters? = nil,
-                                 encoding: ParameterEncoding = URLEncoding.default) async -> Result<T, NetworkError> {
+                                 encoding: ParameterEncoding = URLEncoding.default) async -> Result<T?, NetworkError> {
         guard let url = URL(string: url) else {
             return .failure(NetworkError.urlError)
         }
@@ -32,6 +32,7 @@ final public class NetworkManager {
             do {
                 
                 let networkResponse = try JSONDecoder().decode(NetworkResponse<T>.self, from: data)
+                
                 return .success(networkResponse.data)
             } catch {
                 return .failure(NetworkError.failToDecode(error.localizedDescription))

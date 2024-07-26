@@ -30,6 +30,7 @@
 		F8CF378E2C53F6F100233AAB /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CF378D2C53F6F100233AAB /* SearchTextField.swift */; };
 		F8CF37B42C53FCE900233AAB /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CF37B32C53FCE900233AAB /* NetworkResponse.swift */; };
 		F8CF37B72C5401F500233AAB /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CF37B62C5401F500233AAB /* SortType.swift */; };
+		F8CF37B92C54028C00233AAB /* TabButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CF37B82C54028C00233AAB /* TabButtonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 		F8CF378D2C53F6F100233AAB /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
 		F8CF37B32C53FCE900233AAB /* NetworkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResponse.swift; sourceTree = "<group>"; };
 		F8CF37B62C5401F500233AAB /* SortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
+		F8CF37B82C54028C00233AAB /* TabButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabButtonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				F8CF378D2C53F6F100233AAB /* SearchTextField.swift */,
+				F8CF37B82C54028C00233AAB /* TabButtonView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -520,6 +523,7 @@
 				F8A56E332C53871500111E08 /* CoinListNetwork.swift in Sources */,
 				F8CF378B2C53F3BB00233AAB /* CoinListViewModel.swift in Sources */,
 				F8A56DCA2C53800B00111E08 /* AppDelegate.swift in Sources */,
+				F8CF37B92C54028C00233AAB /* TabButtonView.swift in Sources */,
 				F8A56E392C53889900111E08 /* CoinListCoreData.swift in Sources */,
 				F8CF37B42C53FCE900233AAB /* NetworkResponse.swift in Sources */,
 				F8CF37B72C5401F500233AAB /* SortType.swift in Sources */,

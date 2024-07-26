@@ -14,12 +14,17 @@ public struct CoinListNetwork {
         self.manager = manager
     }
     public func fetchList(query: String) async -> Result<[CoinListItem], NetworkError> {
-        let url = "https://api.korbit.co.kr/v2/tickers"
-        var parameters: Parameters?
+        var url = "https://api.korbit.co.kr/v2/tickers"
         if !query.isEmpty {
-            parameters = ["symbol": query ]
+            url += "?symbol=\(query.lowercased())"
         }
         
-        return await manager.fetchData(url: url, method: .get, parameters: parameters)
+        let result: Result<[CoinListItem]?, NetworkError> = await manager.fetchData(url: url, method: .get)
+        switch result {
+        case let .success(coinList):
+            return .success(coinList ?? [])
+        case let .failure(error):
+            return .failure(error)
+        }
     }
 }
