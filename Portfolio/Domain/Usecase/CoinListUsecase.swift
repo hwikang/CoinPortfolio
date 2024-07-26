@@ -8,9 +8,9 @@
 import Foundation
 
 public protocol CoinListUsecaseProtocol {
-    func fetchList(query: String) -> Result<[CoinListItem],Error>
-    func saveFavorite(item: CoinListItem)
-    func getFavotiteList() -> [CoinListItem]
-    func deleteFavoriteList(symbol: String)
-    func resetFavoriteList()
+    func fetchList(query: String) -> Result<[CoinListItem], NetworkError>
+    func saveFavorite(item: CoinListItem) -> Result<Bool, CoreDataError>
+    func getFavotiteList() -> Result<[CoinListItem], CoreDataError>
+    func deleteFavoriteList(symbol: String) -> Result<Bool, CoreDataError>
+    func resetFavoriteList() -> Result<Bool, CoreDataError>
 }
