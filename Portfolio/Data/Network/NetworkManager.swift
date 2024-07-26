@@ -14,7 +14,7 @@ final public class NetworkManager {
         config.requestCachePolicy = .returnCacheDataElseLoad
         return Session(configuration: config)
     }()
-  
+
     func fetchData<T:Decodable> (url: String, method: HTTPMethod, parameters: Parameters? = nil,
                                  encoding: ParameterEncoding = URLEncoding.default) async -> Result<T, NetworkError> {
         guard let url = URL(string: url) else {
@@ -30,8 +30,9 @@ final public class NetworkManager {
     
         if 200..<400 ~= response.statusCode {
             do {
-                let data = try JSONDecoder().decode(T.self, from: data)
-                return .success(data)
+                
+                let networkResponse = try JSONDecoder().decode(NetworkResponse<T>.self, from: data)
+                return .success(networkResponse.data)
             } catch {
                 return .failure(NetworkError.failToDecode(error.localizedDescription))
             }
