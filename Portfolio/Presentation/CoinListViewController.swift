@@ -94,18 +94,13 @@ class CoinListViewController: UIViewController {
         output.error.bind { error in
             print(error)
         }.disposed(by: disposeBag)
+        output.toastMessage.bind { [weak self] message in
+            self?.showToast(message: message, duration: 5)
+        }.disposed(by: disposeBag)
     }
     
     private func bindView() {
-        tabButtonView.selectedType.bind { type in
-            switch type {
-            case .market:
-                print("market")
-            case .favorite:
-                print("favorite")
-
-            }
-        }.disposed(by: disposeBag)
+       
         
         sortButtonView.selectedType.bind { sort in
             switch sort {

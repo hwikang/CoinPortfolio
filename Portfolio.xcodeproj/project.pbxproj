@@ -10,6 +10,8 @@
 		0318FCBF803BCA8297DB0213 /* Pods_PortfolioTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA83785FAF54137A9752DBB6 /* Pods_PortfolioTests.framework */; };
 		17504D4E5F946785218333A5 /* Pods_Portfolio_PortfolioUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CEC6CE77CB127AEA3F2E159 /* Pods_Portfolio_PortfolioUITests.framework */; };
 		8AF73B5E03BC91E818103902 /* Pods_Portfolio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D837901C46336E39E533C0C8 /* Pods_Portfolio.framework */; };
+		F840B6E62C54D82F001C5AF0 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F840B6E52C54D82F001C5AF0 /* UIViewController.swift */; };
+		F840B6E82C54D97F001C5AF0 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F840B6E72C54D97F001C5AF0 /* ToastView.swift */; };
 		F8A56DCA2C53800B00111E08 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A56DC92C53800B00111E08 /* AppDelegate.swift */; };
 		F8A56DCC2C53800B00111E08 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A56DCB2C53800B00111E08 /* SceneDelegate.swift */; };
 		F8A56DCE2C53800B00111E08 /* CoinListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8A56DCD2C53800B00111E08 /* CoinListViewController.swift */; };
@@ -62,6 +64,8 @@
 		D920CFF5349362EBAF01C024 /* Pods-Portfolio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portfolio.release.xcconfig"; path = "Target Support Files/Pods-Portfolio/Pods-Portfolio.release.xcconfig"; sourceTree = "<group>"; };
 		EA83785FAF54137A9752DBB6 /* Pods_PortfolioTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PortfolioTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4A0181D479AAB6EF7498FB0 /* Pods-Portfolio-PortfolioUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Portfolio-PortfolioUITests.debug.xcconfig"; path = "Target Support Files/Pods-Portfolio-PortfolioUITests/Pods-Portfolio-PortfolioUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F840B6E52C54D82F001C5AF0 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		F840B6E72C54D97F001C5AF0 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		F8A56DC62C53800B00111E08 /* Portfolio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Portfolio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F8A56DC92C53800B00111E08 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8A56DCB2C53800B00111E08 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -142,6 +146,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F840B6E42C54D826001C5AF0 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				F840B6E52C54D82F001C5AF0 /* UIViewController.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		F8A56DBD2C53800B00111E08 = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +180,7 @@
 			children = (
 				F8A56DC92C53800B00111E08 /* AppDelegate.swift */,
 				F8A56DCB2C53800B00111E08 /* SceneDelegate.swift */,
+				F840B6E42C54D826001C5AF0 /* Extension */,
 				F8CF37892C53F3AE00233AAB /* Presentation */,
 				F8A56E2E2C53855800111E08 /* Data */,
 				F8A56E202C5383B200111E08 /* Domain */,
@@ -275,6 +288,7 @@
 			children = (
 				F8CF378D2C53F6F100233AAB /* SearchTextField.swift */,
 				F8CF37BA2C540B0B00233AAB /* SortButtonView.swift */,
+				F840B6E72C54D97F001C5AF0 /* ToastView.swift */,
 				F8CF37BC2C54B53000233AAB /* CoinListItemCell.swift */,
 				F8CF37B82C54028C00233AAB /* TabButtonView.swift */,
 			);
@@ -523,6 +537,7 @@
 				F8A56E282C53848700111E08 /* NetworkError.swift in Sources */,
 				F8A56E312C53857600111E08 /* NetworkManager.swift in Sources */,
 				F8A56DCE2C53800B00111E08 /* CoinListViewController.swift in Sources */,
+				F840B6E82C54D97F001C5AF0 /* ToastView.swift in Sources */,
 				F8A56E2D2C53850F00111E08 /* CoinListRepositoryProtocol.swift in Sources */,
 				F8CF37BB2C540B0B00233AAB /* SortButtonView.swift in Sources */,
 				F8A56E2A2C53849E00111E08 /* CoreDataError.swift in Sources */,
@@ -532,6 +547,7 @@
 				F8CF378B2C53F3BB00233AAB /* CoinListViewModel.swift in Sources */,
 				F8A56DCA2C53800B00111E08 /* AppDelegate.swift in Sources */,
 				F8CF37B92C54028C00233AAB /* TabButtonView.swift in Sources */,
+				F840B6E62C54D82F001C5AF0 /* UIViewController.swift in Sources */,
 				F8A56E392C53889900111E08 /* CoinListCoreData.swift in Sources */,
 				F8CF37B42C53FCE900233AAB /* NetworkResponse.swift in Sources */,
 				F8CF37B72C5401F500233AAB /* SortType.swift in Sources */,

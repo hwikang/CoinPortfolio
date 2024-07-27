@@ -16,6 +16,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
     private let usecase: CoinListUsecaseProtocol
     private let disposeBag = DisposeBag()
     private let error = PublishRelay<String>()
+    private let toastMessage = PublishRelay<String>()
     private let coinList = PublishRelay<[CoinListItem]>()
     private let favoriteCoinList = PublishRelay<[CoinListItem]>()
     private let allFavoriteCoinList = BehaviorRelay<[CoinListItem]>(value: [])
@@ -33,9 +34,9 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
     }
     
     public struct Output {
-        let coinList: Observable<[CoinListItem]>
         let cellData: Observable<[CoinListItemCellData]>
         let error: Observable<String>
+        let toastMessage: Observable<String>
     }
     
     public func transform(input: Input) -> Output {
@@ -71,8 +72,9 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
                 }
           
         }
-        return Output(coinList: coinList.asObservable(), cellData: cellData,
-                      error: error.asObservable())
+        return Output(cellData: cellData,
+                      error: error.asObservable(),
+                      toastMessage: toastMessage.asObservable())
     }
     
     private func fetchList(query: String) {
@@ -104,6 +106,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
         let result = usecase.saveFavorite(item: item)
         switch result {
         case .success:
+            toastMessage.accept("즐겨찾기 저장 완료")
             getFavoriteList(query: "")
         case let .failure(error):
             self.error.accept(error.description)
@@ -114,6 +117,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
         let result = usecase.deleteFavoriteList(symbol: symbole)
         switch result {
         case .success:
+            toastMessage.accept("즐겨찾기 해제 완료")
             getFavoriteList(query: "")
         case let .failure(error):
             self.error.accept(error.description)
