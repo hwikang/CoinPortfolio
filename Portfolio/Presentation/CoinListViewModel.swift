@@ -58,10 +58,11 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
 
                 switch tabType {
                 case .market:
-                    let favoriteCoinSet = Set(favoriteCoinList)
+                    
+                    let favoriteCoinSet = Set(favoriteCoinList.map { $0.symbol })
                     let sortedCoinList = sorted(coinList: coinList, sort: sort)
                     let coinListCellData: [CoinListItemCellData] = sortedCoinList.map { coin in
-                        if favoriteCoinSet.contains(coin) {
+                        if favoriteCoinSet.contains(coin.symbol) {
                             return .init(isSelected: true, data: coin)
                         } else {
                             return .init(isSelected: false, data: coin)

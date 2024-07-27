@@ -53,7 +53,7 @@ final public class CoinListCoreData {
     
     public func getFavoriteList(query: String) -> Result<[CoinListItem], CoreDataError>  {
         do {
-            let result = try getFavoriteCoin(symbol: query)
+            let result = try getFavoriteCoin(symbol: query.lowercased())
             let list: [CoinListItem] = result.compactMap { location in
                
                 guard let symbol = location.symbol else { return nil }

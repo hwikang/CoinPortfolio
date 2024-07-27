@@ -23,6 +23,7 @@ class CoinListViewController: UIViewController {
         let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.contentInset = .init(top: 16, left: 0, bottom: 16, right: 0)
+        tableView.keyboardDismissMode = .onDrag
         tableView.register(CoinListItemCell.self,
                            forCellReuseIdentifier: CoinListItemCell.id)
         

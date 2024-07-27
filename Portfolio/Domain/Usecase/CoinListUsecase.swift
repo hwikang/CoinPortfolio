@@ -33,7 +33,7 @@ public struct CoinListUsecase: CoinListUsecaseProtocol {
         if query.isEmpty {
             repository.getFavoriteList()
         } else {
-            repository.getFavoriteList()
+            repository.getFavoriteList(query: query)
         }
         
     }
