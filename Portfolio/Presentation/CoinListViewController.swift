@@ -15,7 +15,16 @@ class CoinListViewController: UIViewController {
     private let tabButtonView = TabButtonView(typeList: [.market, .favorite])
     private let sortButtonView = SortButtonView(sortList: [.name(nil), .price(nil), .change(nil), .quoteVolume(nil)])
     private let disposeBag = DisposeBag()
-    
+    private let coinListTableView = {
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.contentInset = .init(top: 16, left: 0, bottom: 16, right: 0)
+        tableView.register(CoinListItemCell.self,
+                           forCellReuseIdentifier: CoinListItemCell.id)
+        
+        return tableView
+    }()
+
     public init(viewModel: CoinListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -32,6 +41,7 @@ class CoinListViewController: UIViewController {
         view.addSubview(textfield)
         view.addSubview(tabButtonView)
         view.addSubview(sortButtonView)
+        view.addSubview(coinListTableView)
         textfield.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview().inset(14)
@@ -47,6 +57,11 @@ class CoinListViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(14)
             make.height.equalTo(44)
         }
+        coinListTableView.snp.makeConstraints { make in
+            make.top.equalTo(sortButtonView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
     }
     
     private func bindViewModel() {
@@ -54,8 +69,15 @@ class CoinListViewController: UIViewController {
             searchQuery: textfield.rx.text.orEmpty.distinctUntilChanged().debounce(.milliseconds(200), scheduler: MainScheduler.instance)
         ))
         output.coinList.bind { coinList in
-            print(coinList)
+            //            print(coinList)
         }.disposed(by: disposeBag)
+        
+        output.coinList.observe(on: MainScheduler.instance)
+            .bind(to: coinListTableView.rx.items) { tableView, _, element in
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: CoinListItemCell.id) as? CoinListItemCell else { return UITableViewCell() }
+                cell.apply(item: element)
+                return cell
+            }.disposed(by: disposeBag)
         output.error.bind { error in
             print(error)
         }.disposed(by: disposeBag)

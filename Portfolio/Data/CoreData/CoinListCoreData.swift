@@ -32,9 +32,7 @@ final public class CoinListCoreData {
             return .success(true)
         } catch let error {
             return .failure(CoreDataError.saveError(error.localizedDescription))
-            
         }
-        
     }
     
     public func getFavotiteList() -> Result<[CoinListItem], CoreDataError>  {
@@ -42,10 +40,10 @@ final public class CoinListCoreData {
         do {
             let result = try viewContext.fetch(fetchRequest)
             let list: [CoinListItem] = result.compactMap { location in
-                guard let symbol = location.symbol, let close = location.close, let priceChangePercent = location.priceChangePercent,
-                      let priceChange = location.priceChange, let quoteVolume = location.quoteVolume else { return nil }
-                return CoinListItem(symbol: symbol, close: close, priceChangePercent: priceChangePercent, priceChange: priceChange,
-                                    quoteVolume: quoteVolume)
+               
+                guard let symbol = location.symbol else { return nil }
+                return CoinListItem(symbol: symbol, close: location.close, priceChangePercent: location.priceChangePercent, priceChange: location.priceChange,
+                                    quoteVolume: location.quoteVolume)
             }
             return .success(list)
         } catch let error {

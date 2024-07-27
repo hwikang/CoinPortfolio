@@ -24,6 +24,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
     
     public struct Input {
         let searchQuery: Observable<String>
+        
     }
     
     public struct Output {

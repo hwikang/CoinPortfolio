@@ -17,12 +17,10 @@ public class CoreDataManager {
       
         let container = NSPersistentContainer(name: "Portfolio")
 
-        let storeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("Portfolio.sqlite")
-        let description = NSPersistentStoreDescription(url: storeURL)
-        description.setOption(true as NSNumber, forKey: NSMigratePersistentStoresAutomaticallyOption)
-        description.setOption(true as NSNumber, forKey: NSInferMappingModelAutomaticallyOption)
-        container.persistentStoreDescriptions = [description]
-        
+        let storeDescription = container.persistentStoreDescriptions.first
+        storeDescription?.shouldMigrateStoreAutomatically = true
+        storeDescription?.shouldInferMappingModelAutomatically = true
+
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
