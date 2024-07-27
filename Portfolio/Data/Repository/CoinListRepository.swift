@@ -22,8 +22,11 @@ public struct CoinListRepository: CoinListRepositoryProtocol {
         coreData.saveFavorite(item: item)
     }
     
-    public func getFavotiteList() -> Result<[CoinListItem], CoreDataError> {
-        coreData.getFavotiteList()
+    public func getFavoriteList() -> Result<[CoinListItem], CoreDataError> {
+        coreData.getFavoriteList()
+    }
+    public func getFavoriteList(query: String) -> Result<[CoinListItem], CoreDataError> {
+        coreData.getFavoriteList(query: query)
     }
     
     public func deleteFavoriteList(symbol: String) -> Result<Bool, CoreDataError> {

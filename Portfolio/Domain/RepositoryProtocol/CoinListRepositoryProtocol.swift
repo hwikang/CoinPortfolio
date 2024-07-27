@@ -9,7 +9,8 @@ import Foundation
 public protocol CoinListRepositoryProtocol {
     func fetchList(query: String) async -> Result<[CoinListItem], NetworkError>
     func saveFavorite(item: CoinListItem) -> Result<Bool, CoreDataError>
-    func getFavotiteList() -> Result<[CoinListItem], CoreDataError>
+    func getFavoriteList() -> Result<[CoinListItem], CoreDataError>
+    func getFavoriteList(query: String) -> Result<[CoinListItem], CoreDataError>
     func deleteFavoriteList(symbol: String) -> Result<Bool, CoreDataError>
     func resetFavoriteList() -> Result<Bool, CoreDataError>
 }

@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+
 public enum TabButtonType: String {
     case market = "마켓"
     case favorite = "즐겨찾기"

@@ -21,7 +21,7 @@ final public class CoinListCoreData {
         
         do {
             let duplicatedLocation = try getFavoriteCoin(symbol: item.symbol)
-            if duplicatedLocation != nil { return .failure(.saveError("Duplicated Location Info"))}
+            if !duplicatedLocation.isEmpty { return .failure(.saveError("Duplicated Location Info"))}
             let userObject = NSManagedObject(entity: entity, insertInto: viewContext)
             userObject.setValue(item.symbol, forKey: "symbol")
             userObject.setValue(item.close, forKey: "close")
@@ -35,10 +35,25 @@ final public class CoinListCoreData {
         }
     }
     
-    public func getFavotiteList() -> Result<[CoinListItem], CoreDataError>  {
+    public func getFavoriteList() -> Result<[CoinListItem], CoreDataError>  {
         let fetchRequest: NSFetchRequest<FavoriteCoinListItem> = FavoriteCoinListItem.fetchRequest()
         do {
             let result = try viewContext.fetch(fetchRequest)
+            let list: [CoinListItem] = result.compactMap { location in
+               
+                guard let symbol = location.symbol else { return nil }
+                return CoinListItem(symbol: symbol, close: location.close, priceChangePercent: location.priceChangePercent, priceChange: location.priceChange,
+                                    quoteVolume: location.quoteVolume)
+            }
+            return .success(list)
+        } catch let error {
+            return .failure(CoreDataError.readError(error.localizedDescription))
+        }
+    }
+    
+    public func getFavoriteList(query: String) -> Result<[CoinListItem], CoreDataError>  {
+        do {
+            let result = try getFavoriteCoin(symbol: query)
             let list: [CoinListItem] = result.compactMap { location in
                
                 guard let symbol = location.symbol else { return nil }
@@ -78,12 +93,12 @@ final public class CoinListCoreData {
     }
 
     
-    private func getFavoriteCoin(symbol: String) throws -> FavoriteCoinListItem? {
+    private func getFavoriteCoin(symbol: String) throws -> [FavoriteCoinListItem] {
         let fetchRequest: NSFetchRequest<FavoriteCoinListItem> = FavoriteCoinListItem.fetchRequest()
         let predicate = NSPredicate(format: "symbol == %@", symbol)
         fetchRequest.predicate = predicate
         let results = try viewContext.fetch(fetchRequest)
-        return results.first
+        return results
     }
     
 }

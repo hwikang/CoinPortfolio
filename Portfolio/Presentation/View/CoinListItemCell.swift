@@ -9,9 +9,15 @@
 import UIKit
 import RxSwift
 
+public struct CoinListItemCellData {
+    let isSelected: Bool
+    let data: CoinListItem
+}
+
 final class CoinListItemCell: UITableViewCell {
 
     static let id: String = "CoinListItemCell"
+    public var disposeBag = DisposeBag()
     private let containerView = {
         let view = UIView()
         view.layer.cornerRadius = 16
@@ -19,7 +25,7 @@ final class CoinListItemCell: UITableViewCell {
         view.layer.borderColor = UIColor.systemGray.cgColor
         return view
     }()
-    private let favoriteImageView = UIImageView()
+    public let favoriteButton = UIButton()
     private let nameLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
@@ -52,16 +58,20 @@ final class CoinListItemCell: UITableViewCell {
         label.font = .systemFont(ofSize: 12)
         return label
     }()
-    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         setUI()
+        
     }
     
     private func setUI() {
         contentView.addSubview(containerView)
-        containerView.addSubview(favoriteImageView)
+        containerView.addSubview(favoriteButton)
 
         containerView.addSubview(nameLabel)
         containerView.addSubview(priceLabel)
@@ -79,13 +89,13 @@ final class CoinListItemCell: UITableViewCell {
             make.height.equalTo(88)
             make.bottom.equalTo(-16)
         }
-        favoriteImageView.snp.makeConstraints { make in
+        favoriteButton.snp.makeConstraints { make in
             make.leading.equalTo(14)
             make.width.height.equalTo(24)
             make.centerY.equalToSuperview()
         }
         nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(favoriteImageView.snp.trailing).offset(12)
+            make.leading.equalTo(favoriteButton.snp.trailing).offset(12)
             make.centerY.equalToSuperview()
         }
         priceLabel.snp.makeConstraints { make in
@@ -107,16 +117,18 @@ final class CoinListItemCell: UITableViewCell {
         
     }
     
-    func apply(item: CoinListItem) {
-        favoriteImageView.image = UIImage(named: "selectFavorite")
+    func apply(cellData: CoinListItemCellData) {
+        let item = cellData.data
+        if cellData.isSelected {
+            favoriteButton.setImage(UIImage(named: "selectFavorite"), for: .normal)
+        } else {
+            favoriteButton.setImage(UIImage(named: "unselectFavorite"), for: .normal)
+        }
+      
         nameLabel.text = item.symbol.replacingOccurrences(of: "_", with: "/").uppercased()
-        
         priceLabel.text = formatPrice(price: item.close)
         priceChangeLabel.text = formatPrice(price: item.priceChange)
-
         setPriceChangePercentLabel(percent: item.priceChangePercent)
-        
-    
         quoteVolumeLabel.text = formatNumberWithCommas(Int(item.quoteVolume))
         
     }

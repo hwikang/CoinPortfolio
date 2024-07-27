@@ -7,10 +7,15 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 import SnapKit
 
 class CoinListViewController: UIViewController {
     private let viewModel: CoinListViewModelProtocol
+    private let saveFavorite = PublishRelay<CoinListItem>()
+    private let deleteFavorite = PublishRelay<String>()
+    private let sortType = PublishRelay<SortType>()
+    
     public let textfield = SearchTextField()
     private let tabButtonView = TabButtonView(typeList: [.market, .favorite])
     private let sortButtonView = SortButtonView(sortList: [.name(nil), .price(nil), .change(nil), .quoteVolume(nil)])
@@ -66,16 +71,24 @@ class CoinListViewController: UIViewController {
     
     private func bindViewModel() {
         let output = viewModel.transform(input: .init(
-            searchQuery: textfield.rx.text.orEmpty.distinctUntilChanged().debounce(.milliseconds(200), scheduler: MainScheduler.instance)
+            searchQuery: textfield.rx.text.orEmpty.distinctUntilChanged().debounce(.milliseconds(200), scheduler: MainScheduler.instance), tabButtonType: tabButtonView.selectedType.asObservable(),
+            saveCoin: saveFavorite.asObservable(), deleceCoin: deleteFavorite.asObservable(), sort: sortType.asObservable()
         ))
-        output.coinList.bind { coinList in
-            //            print(coinList)
-        }.disposed(by: disposeBag)
+      
         
-        output.coinList.observe(on: MainScheduler.instance)
-            .bind(to: coinListTableView.rx.items) { tableView, _, element in
+        
+        output.cellData.observe(on: MainScheduler.instance)
+            .bind(to: coinListTableView.rx.items) { [weak self] tableView, _, element in
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: CoinListItemCell.id) as? CoinListItemCell else { return UITableViewCell() }
-                cell.apply(item: element)
+                cell.apply(cellData: element)
+                cell.favoriteButton.rx.tap.bind {
+                    if element.isSelected {
+                        self?.deleteFavorite.accept(element.data.symbol)
+                    } else {
+                        self?.saveFavorite.accept(element.data)
+                    }
+
+                }.disposed(by: cell.disposeBag)
                 return cell
             }.disposed(by: disposeBag)
         output.error.bind { error in

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CoinListItem: Decodable {
+public struct CoinListItem: Decodable, Hashable {
     public let symbol: String
     public let close: Double
     public let priceChangePercent: Double
