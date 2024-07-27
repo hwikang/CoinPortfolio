@@ -31,6 +31,7 @@
 		F8CF37B42C53FCE900233AAB /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CF37B32C53FCE900233AAB /* NetworkResponse.swift */; };
 		F8CF37B72C5401F500233AAB /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CF37B62C5401F500233AAB /* SortType.swift */; };
 		F8CF37B92C54028C00233AAB /* TabButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CF37B82C54028C00233AAB /* TabButtonView.swift */; };
+		F8CF37BB2C540B0B00233AAB /* SortButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CF37BA2C540B0B00233AAB /* SortButtonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		F8CF37B32C53FCE900233AAB /* NetworkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResponse.swift; sourceTree = "<group>"; };
 		F8CF37B62C5401F500233AAB /* SortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
 		F8CF37B82C54028C00233AAB /* TabButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabButtonView.swift; sourceTree = "<group>"; };
+		F8CF37BA2C540B0B00233AAB /* SortButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortButtonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				F8CF378D2C53F6F100233AAB /* SearchTextField.swift */,
+				F8CF37BA2C540B0B00233AAB /* SortButtonView.swift */,
 				F8CF37B82C54028C00233AAB /* TabButtonView.swift */,
 			);
 			path = View;
@@ -518,6 +521,7 @@
 				F8A56E312C53857600111E08 /* NetworkManager.swift in Sources */,
 				F8A56DCE2C53800B00111E08 /* CoinListViewController.swift in Sources */,
 				F8A56E2D2C53850F00111E08 /* CoinListRepositoryProtocol.swift in Sources */,
+				F8CF37BB2C540B0B00233AAB /* SortButtonView.swift in Sources */,
 				F8A56E2A2C53849E00111E08 /* CoreDataError.swift in Sources */,
 				F8A56E242C53842B00111E08 /* CoinListUsecase.swift in Sources */,
 				F8A56E332C53871500111E08 /* CoinListNetwork.swift in Sources */,

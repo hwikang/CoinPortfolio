@@ -13,7 +13,7 @@ class CoinListViewController: UIViewController {
     private let viewModel: CoinListViewModelProtocol
     public let textfield = SearchTextField()
     private let tabButtonView = TabButtonView(typeList: [.market, .favorite])
-
+    private let sortButtonView = SortButtonView(sortList: [.name(nil), .price(nil), .change(nil), .quoteVolume(nil)])
     private let disposeBag = DisposeBag()
     
     public init(viewModel: CoinListViewModelProtocol) {
@@ -31,7 +31,7 @@ class CoinListViewController: UIViewController {
     private func setUI() {
         view.addSubview(textfield)
         view.addSubview(tabButtonView)
-
+        view.addSubview(sortButtonView)
         textfield.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview().inset(14)
@@ -39,6 +39,11 @@ class CoinListViewController: UIViewController {
         }
         tabButtonView.snp.makeConstraints { make in
             make.top.equalTo(textfield.snp.bottom)
+            make.leading.trailing.equalToSuperview().inset(14)
+            make.height.equalTo(60)
+        }
+        sortButtonView.snp.makeConstraints { make in
+            make.top.equalTo(tabButtonView.snp.bottom)
             make.leading.trailing.equalToSuperview().inset(14)
             make.height.equalTo(44)
         }
@@ -66,6 +71,21 @@ class CoinListViewController: UIViewController {
 
             }
         }.disposed(by: disposeBag)
+        
+        sortButtonView.selectedType.bind { sort in
+            switch sort {
+            case let .name(order):
+                print("name\(order)")
+            case let .price(order):
+                print("price \(order)")
+            case let .change(order):
+                print("change \(order)")
+            case let .quoteVolume(order):
+                print("quoteVolume \(order)")
+            default: print("null")
+            }
+        }.disposed(by: disposeBag)
+        
     }
     
     

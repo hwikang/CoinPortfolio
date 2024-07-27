@@ -7,9 +7,26 @@
 
 import Foundation
 
-enum SortType {
-    case name
-    case price
-    case change
-    case quoteVolume
+public enum SortType: Equatable {
+    case name(Order?)
+    case price(Order?)
+    case change(Order?)
+    case quoteVolume(Order?)
+    
+    public static func == (lhs: SortType, rhs: SortType) -> Bool {
+            switch (lhs, rhs) {
+            case (.name, .name),
+                 (.price, .price),
+                 (.change, .change),
+                 (.quoteVolume, .quoteVolume):
+                return true
+            default:
+                return false
+            }
+        }
+}
+
+public enum Order {
+    case ascending
+    case descending
 }
