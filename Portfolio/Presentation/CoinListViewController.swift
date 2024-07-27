@@ -14,7 +14,6 @@ class CoinListViewController: UIViewController {
     private let viewModel: CoinListViewModelProtocol
     private let saveFavorite = PublishRelay<CoinListItem>()
     private let deleteFavorite = PublishRelay<String>()
-    private let sortType = PublishRelay<SortType>()
     
     public let textfield = SearchTextField()
     private let tabButtonView = TabButtonView(typeList: [.market, .favorite])
@@ -39,7 +38,6 @@ class CoinListViewController: UIViewController {
         super.viewDidLoad()
         setUI()
         bindViewModel()
-        bindView()
     }
     
     private func setUI() {
@@ -71,11 +69,12 @@ class CoinListViewController: UIViewController {
     
     private func bindViewModel() {
         let output = viewModel.transform(input: .init(
-            searchQuery: textfield.rx.text.orEmpty.distinctUntilChanged().debounce(.milliseconds(200), scheduler: MainScheduler.instance), tabButtonType: tabButtonView.selectedType.asObservable(),
-            saveCoin: saveFavorite.asObservable(), deleceCoin: deleteFavorite.asObservable(), sort: sortType.asObservable()
+            searchQuery: textfield.rx.text.orEmpty.distinctUntilChanged().debounce(.milliseconds(200), scheduler: MainScheduler.instance),
+            tabButtonType: tabButtonView.selectedType.asObservable(),
+            saveCoin: saveFavorite.asObservable(), 
+            deleceCoin: deleteFavorite.asObservable(),
+            sort: sortButtonView.selectedType.asObservable()
         ))
-      
-        
         
         output.cellData.observe(on: MainScheduler.instance)
             .bind(to: coinListTableView.rx.items) { [weak self] tableView, _, element in
@@ -98,26 +97,6 @@ class CoinListViewController: UIViewController {
             self?.showToast(message: message, duration: 5)
         }.disposed(by: disposeBag)
     }
-    
-    private func bindView() {
-       
-        
-        sortButtonView.selectedType.bind { sort in
-            switch sort {
-            case let .name(order):
-                print("name\(order)")
-            case let .price(order):
-                print("price \(order)")
-            case let .change(order):
-                print("change \(order)")
-            case let .quoteVolume(order):
-                print("quoteVolume \(order)")
-            default: print("null")
-            }
-        }.disposed(by: disposeBag)
-        
-    }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

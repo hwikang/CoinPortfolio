@@ -53,13 +53,14 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
             deleteFavorite(symbole: symbol)
         }.disposed(by: disposeBag)
 
-        let cellData = Observable.combineLatest(coinList, allFavoriteCoinList, favoriteCoinList, input.tabButtonType)
-            .map { coinList, allFavoriteCoinList, favoriteCoinList, tabType in
+        let cellData = Observable.combineLatest(coinList, allFavoriteCoinList, favoriteCoinList, input.tabButtonType, input.sort)
+            .map { coinList, allFavoriteCoinList, favoriteCoinList, tabType, sort in
 
                 switch tabType {
                 case .market:
                     let favoriteCoinSet = Set(favoriteCoinList)
-                    let coinListCellData: [CoinListItemCellData] = coinList.map { coin in
+                    let sortedCoinList = sorted(coinList: coinList, sort: sort)
+                    let coinListCellData: [CoinListItemCellData] = sortedCoinList.map { coin in
                         if favoriteCoinSet.contains(coin) {
                             return .init(isSelected: true, data: coin)
                         } else {
@@ -68,13 +69,46 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
                     }
                     return coinListCellData
                 case .favorite:
-                    return favoriteCoinList.map { .init(isSelected: true, data: $0) }
+                    let sortedFavoriteCoinList = sorted(coinList: favoriteCoinList, sort: sort)
+                    return sortedFavoriteCoinList.map { .init(isSelected: true, data: $0) }
                 }
           
-        }
+            }
+        
         return Output(cellData: cellData,
                       error: error.asObservable(),
                       toastMessage: toastMessage.asObservable())
+    }
+    
+    private func sorted(coinList: [CoinListItem], sort: SortType) -> [CoinListItem] {
+        switch sort {
+        case let .name(order):
+            switch order {
+            case .ascending:  return coinList.sorted { $0.symbol < $1.symbol }
+            case .descending:  return coinList.sorted { $0.symbol > $1.symbol }
+            default: return coinList
+            }
+            
+        case let .price(order):
+            switch order {
+            case .ascending:  return coinList.sorted { $0.close < $1.close }
+            case .descending:   return coinList.sorted { $0.close > $1.close }
+            default: return coinList
+            }
+        case let .change(order):
+            switch order {
+            case .ascending:  return coinList.sorted { $0.priceChangePercent < $1.priceChangePercent }
+            case .descending:   return coinList.sorted { $0.priceChangePercent > $1.priceChangePercent }
+            default: return coinList
+            }
+            
+        case let .quoteVolume(order):
+            switch order {
+            case .ascending: return coinList.sorted { $0.quoteVolume < $1.quoteVolume }
+            case .descending: return coinList.sorted { $0.quoteVolume > $1.quoteVolume }
+            default: return coinList
+            }
+        }
     }
     
     private func fetchList(query: String) {

@@ -22,7 +22,7 @@ extension SortType {
 final public class SortButtonView: UIStackView {
 
     private let disposeBag = DisposeBag()
-    public let selectedType = BehaviorRelay<SortType?>(value: nil)
+    public let selectedType = BehaviorRelay<SortType>(value: .quoteVolume(.descending))
     
     private let dividerView = {
         let view = UIView()
@@ -66,8 +66,7 @@ final public class SortButtonView: UIStackView {
     private func bindView() {
         
         selectedType.bind { [weak self] type in
-          
-            guard let type = type else { return }
+
             self?.arrangedSubviews.compactMap { $0 as? SortButton }.forEach { sortButton in
                 if sortButton.type == type {
                     sortButton.type = type
@@ -87,9 +86,9 @@ final public class SortButtonView: UIStackView {
     
     private func nextOrder(order: Order?) -> Order? {
         switch order {
+        case .descending: return .ascending
         case .ascending: return .descending
-        case .descending: return nil
-        default: return .ascending
+        default: return .descending
         }
     }
     
@@ -103,14 +102,17 @@ final fileprivate class SortButton: UIButton {
     public var tapButton: Observable<Order?>?
     public var type: SortType {
         didSet {
-            print("Set type \(type)")
+
             switch type {
             case let .name(order), let .price(order), let .change(order), let .quoteVolume(order):
                 if order == .ascending || order == .descending {
                     titleLabel?.font = .systemFont(ofSize: 14, weight: .heavy)
+                    setImage(order == .ascending ? UIImage(systemName: "arrow.down") : UIImage(systemName: "arrow.up"),
+                             for: .normal)
                     
                 } else {
                     titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
+                    setImage(UIImage(systemName: "arrow.up.arrow.down"), for: .normal)
 
                 }
             }
@@ -123,7 +125,7 @@ final fileprivate class SortButton: UIButton {
         setTitle(type.title, for: .normal)
         titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
         setTitleColor(.black, for: .normal)
-        setImage(UIImage(systemName: "arrow.up.arrow.down")?.withTintColor(.black), for: .normal)
+        setImage(UIImage(systemName: "arrow.up.arrow.down"), for: .normal)
         semanticContentAttribute = .forceRightToLeft
         tapButton = rx.tap.map { [weak self] in
             guard let self = self else { return nil }
