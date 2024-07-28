@@ -1,4 +1,6 @@
 # CoinPortfolio
+### 
+
 # 프로젝트 설명
 
 ## 라이브러리
@@ -61,14 +63,6 @@ FavoriteCoinListItem 객체를 사용합니다.
 
 Repository - Network, CoreData를 활용하여 원하는 데이터를 리턴해줍니다.
 
-CoinList Fetch 에서 
-
-symbol=symbol_krw 모두 입력해야 원하는 결과값을 응답하므로 해당 쿼리대로 동작합니다. 
-
-ex> symbol=btc  symbol=eth 동작 안함
-
-즐겨찾기 쿼리 또한 동일하게 동작합니다. 대문자 검색은 허용하도록 구현 했습니다.
-
 ### Presentation
 
 UI 부분을 담당하는 ViewController, ViewModel 이 있습니다.
@@ -94,6 +88,7 @@ MVVM 패턴으로 구성되었고 VM ←VC 간의 이벤트는 Input (VC→VM) O
 ```
 
 Output.cellData 를 통해 리스트에 쓰일 데이터가 전달됩니다. 탭의 상태, 정렬상태, 그리고 리스트를 활용하여 데이터 리스트를 구성합니다.
+
 CoinListItemCellData 는 CoinListItem 객체와 즐겨찾기 선택상태를 담고있습니다.
 
 ```jsx
@@ -104,3 +99,15 @@ public struct CoinListItemCellData {
 }
 
 ```
+
+검색 기능 을 API 에서 지원하지 않아 내부 필터링으로 구현했습니다. 따라서 init과 함께 1회 네트워크, Coredata  fetch 이후 전체 리스트를 저장하여 query 필터링후 리스트를 제공합니다
+
+```jsx
+    private let coinList = PublishRelay<Set<CoinListItem>>()
+    private let favoriteCoinList = PublishRelay<Set<CoinListItem>>()
+    private let allCoinList = BehaviorRelay<Set<CoinListItem>>(value: [])
+    private let allFavoriteCoinList = BehaviorRelay<Set<CoinListItem>>(value: [])
+
+```
+
+이후에 정렬 로직이 따로 실행되며 Filter의 성능을 개선 하기 위해 Array 대신 Set을 사용했습니다
