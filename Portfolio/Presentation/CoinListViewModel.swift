@@ -31,6 +31,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
         let saveCoin: Observable<CoinListItem>
         let deleceCoin: Observable<String>
         let sort: Observable<SortType>
+        let resetFavorite: Observable<Void>
     }
     
     public struct Output {
@@ -53,6 +54,9 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
             deleteFavorite(symbole: symbol)
         }.disposed(by: disposeBag)
 
+        input.resetFavorite.bind {
+            resetFavoriteList()
+        }.disposed(by: disposeBag)
         let cellData = Observable.combineLatest(coinList, allFavoriteCoinList, favoriteCoinList, input.tabButtonType, input.sort)
             .map { coinList, allFavoriteCoinList, favoriteCoinList, tabType, sort in
 
@@ -153,6 +157,17 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
         switch result {
         case .success:
             toastMessage.accept("즐겨찾기 해제 완료")
+            getFavoriteList(query: "")
+        case let .failure(error):
+            self.error.accept(error.description)
+        }
+    }
+    
+    private func resetFavoriteList() {
+        let result = usecase.resetFavoriteList()
+        switch result {
+        case .success:
+            toastMessage.accept("즐겨찾기 일괄 해제 완료")
             getFavoriteList(query: "")
         case let .failure(error):
             self.error.accept(error.description)

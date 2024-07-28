@@ -29,7 +29,11 @@ class CoinListViewController: UIViewController {
         
         return tableView
     }()
-
+    private let resetFavoriteListButton = {
+        let button = UIButton(configuration: .filled())
+        button.setTitle("즐겨찾기 일괄 해제", for: .normal)
+        return button
+    }()
     public init(viewModel: CoinListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -39,6 +43,7 @@ class CoinListViewController: UIViewController {
         super.viewDidLoad()
         setUI()
         bindViewModel()
+        bindView()
     }
     
     private func setUI() {
@@ -46,6 +51,7 @@ class CoinListViewController: UIViewController {
         view.addSubview(tabButtonView)
         view.addSubview(sortButtonView)
         view.addSubview(coinListTableView)
+        view.addSubview(resetFavoriteListButton)
         textfield.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview().inset(14)
@@ -66,6 +72,10 @@ class CoinListViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+        resetFavoriteListButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)
+        }
     }
     
     private func bindViewModel() {
@@ -74,7 +84,8 @@ class CoinListViewController: UIViewController {
             tabButtonType: tabButtonView.selectedType.asObservable(),
             saveCoin: saveFavorite.asObservable(), 
             deleceCoin: deleteFavorite.asObservable(),
-            sort: sortButtonView.selectedType.asObservable()
+            sort: sortButtonView.selectedType.asObservable(),
+            resetFavorite: resetFavoriteListButton.rx.tap.asObservable()
         ))
         
         output.cellData.observe(on: MainScheduler.instance)
@@ -97,6 +108,18 @@ class CoinListViewController: UIViewController {
         output.toastMessage.bind { [weak self] message in
             self?.showToast(message: message, duration: 5)
         }.disposed(by: disposeBag)
+    }
+    
+    private func bindView() {
+        tabButtonView.selectedType.bind { [weak self] type in
+            if case type = .favorite {
+                self?.resetFavoriteListButton.isHidden = false
+            } else {
+                self?.resetFavoriteListButton.isHidden = true
+
+            }
+        }.disposed(by: disposeBag)
+        
     }
     
     required init?(coder: NSCoder) {

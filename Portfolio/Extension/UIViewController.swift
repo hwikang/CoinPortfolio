@@ -19,9 +19,8 @@ extension UIViewController {
         self.view.addSubview(toastView)
         
         toastView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(20)
-            make.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(50)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(80)
         }
         
         UIView.animate(withDuration: 0.5, animations: {
