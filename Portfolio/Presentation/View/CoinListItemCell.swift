@@ -28,12 +28,15 @@ final class CoinListItemCell: UITableViewCell {
     public let favoriteButton = UIButton()
     private let nameLabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 2
         return label
     }()
     private let priceLabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = .systemFont(ofSize: 12)
+        label.numberOfLines = 2
+        label.textAlignment = .center
         return label
     }()
     private let priceChangePercentLabel = {
@@ -44,6 +47,8 @@ final class CoinListItemCell: UITableViewCell {
     private let priceChangeLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
+        label.numberOfLines = 2
+        label.textAlignment = .center
         return label
     }()
     private let changeStackView = {
@@ -56,8 +61,11 @@ final class CoinListItemCell: UITableViewCell {
     private let quoteVolumeLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
+        label.numberOfLines = 2
+        label.textAlignment = .center
         return label
     }()
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag()
@@ -134,7 +142,7 @@ final class CoinListItemCell: UITableViewCell {
     }
     
     private func formatPrice(price: Double) -> String {
-        if price > 100 {
+        if price > 100 || price < -100 {
             return formatNumberWithCommas(Int(price))
         } else {
             return formatDecimal(price, decimalPlaces: 2)

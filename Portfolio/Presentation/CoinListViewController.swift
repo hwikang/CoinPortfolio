@@ -102,8 +102,10 @@ class CoinListViewController: UIViewController {
                 }.disposed(by: cell.disposeBag)
                 return cell
             }.disposed(by: disposeBag)
-        output.error.bind { error in
-            print(error)
+        output.error.bind { [weak self] error in
+            let alert = UIAlertController(title: "에러", message: error, preferredStyle: .alert)
+            alert.addAction(.init(title: "확인", style: .default))
+            self?.present(alert, animated: true)
         }.disposed(by: disposeBag)
         output.toastMessage.bind { [weak self] message in
             self?.showToast(message: message, duration: 5)

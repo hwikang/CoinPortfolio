@@ -57,27 +57,10 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
         input.resetFavorite.bind {
             resetFavoriteList()
         }.disposed(by: disposeBag)
+        
         let cellData = Observable.combineLatest(coinList, allFavoriteCoinList, favoriteCoinList, input.tabButtonType, input.sort)
             .map { coinList, allFavoriteCoinList, favoriteCoinList, tabType, sort in
-
-                switch tabType {
-                case .market:
-                    
-                    let favoriteCoinSet = Set(favoriteCoinList.map { $0.symbol })
-                    let sortedCoinList = sorted(coinList: coinList, sort: sort)
-                    let coinListCellData: [CoinListItemCellData] = sortedCoinList.map { coin in
-                        if favoriteCoinSet.contains(coin.symbol) {
-                            return .init(isSelected: true, data: coin)
-                        } else {
-                            return .init(isSelected: false, data: coin)
-                        }
-                    }
-                    return coinListCellData
-                case .favorite:
-                    let sortedFavoriteCoinList = sorted(coinList: favoriteCoinList, sort: sort)
-                    return sortedFavoriteCoinList.map { .init(isSelected: true, data: $0) }
-                }
-          
+                createCellData(coinList: coinList, allFavoriteCoinList: allFavoriteCoinList, favoriteCoinList: favoriteCoinList, tabType: tabType, sort: sort)
             }
         
         return Output(cellData: cellData,
@@ -85,7 +68,26 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
                       toastMessage: toastMessage.asObservable())
     }
     
-    private func sorted(coinList: [CoinListItem], sort: SortType) -> [CoinListItem] {
+    internal func createCellData(coinList: [CoinListItem], allFavoriteCoinList: [CoinListItem], favoriteCoinList: [CoinListItem], tabType: TabButtonType, sort: SortType) -> [CoinListItemCellData] {
+        switch tabType {
+        case .market:
+            let favoriteCoinSet = Set(favoriteCoinList.map { $0.symbol })
+            let sortedCoinList = sorted(coinList: coinList, sort: sort)
+            let coinListCellData: [CoinListItemCellData] = sortedCoinList.map { coin in
+                if favoriteCoinSet.contains(coin.symbol) {
+                    return .init(isSelected: true, data: coin)
+                } else {
+                    return .init(isSelected: false, data: coin)
+                }
+            }
+            return coinListCellData
+        case .favorite:
+            let sortedFavoriteCoinList = sorted(coinList: favoriteCoinList, sort: sort)
+            return sortedFavoriteCoinList.map { .init(isSelected: true, data: $0) }
+        }
+    }
+    
+    internal func sorted(coinList: [CoinListItem], sort: SortType) -> [CoinListItem] {
         switch sort {
         case let .name(order):
             switch order {

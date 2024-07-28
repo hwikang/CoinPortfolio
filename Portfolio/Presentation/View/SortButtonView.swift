@@ -19,6 +19,7 @@ extension SortType {
         }
     }
 }
+
 final public class SortButtonView: UIStackView {
 
     private let disposeBag = DisposeBag()
@@ -49,6 +50,7 @@ final public class SortButtonView: UIStackView {
     private func addButtons(sortList: [SortType]) {
         sortList.forEach { sort in
             let button = SortButton(type: sort)
+
             addArrangedSubview(button)
             button.tapButton?.bind { [weak self] order in
                 let nextOrder = self?.nextOrder(order: order)
@@ -105,12 +107,14 @@ final fileprivate class SortButton: UIButton {
 
             switch type {
             case let .name(order), let .price(order), let .change(order), let .quoteVolume(order):
-                if order == .ascending || order == .descending {
+                switch order {
+                case .ascending:
                     titleLabel?.font = .systemFont(ofSize: 14, weight: .heavy)
-                    setImage(order == .ascending ? UIImage(systemName: "arrow.down") : UIImage(systemName: "arrow.up"),
-                             for: .normal)
-                    
-                } else {
+                    setImage(UIImage(systemName: "arrow.down"), for: .normal)
+                case .descending:
+                    titleLabel?.font = .systemFont(ofSize: 14, weight: .heavy)
+                    setImage(UIImage(systemName: "arrow.up"), for: .normal)
+                default:
                     titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
                     setImage(UIImage(systemName: "arrow.up.arrow.down"), for: .normal)
 
@@ -123,9 +127,7 @@ final fileprivate class SortButton: UIButton {
         self.type = type
         super.init(frame: .zero)
         setTitle(type.title, for: .normal)
-        titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
         setTitleColor(.black, for: .normal)
-        setImage(UIImage(systemName: "arrow.up.arrow.down"), for: .normal)
         semanticContentAttribute = .forceRightToLeft
         tapButton = rx.tap.map { [weak self] in
             guard let self = self else { return nil }
