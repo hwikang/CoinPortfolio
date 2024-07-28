@@ -17,12 +17,15 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
     private let disposeBag = DisposeBag()
     private let error = PublishRelay<String>()
     private let toastMessage = PublishRelay<String>()
-    private let coinList = PublishRelay<[CoinListItem]>()
-    private let favoriteCoinList = PublishRelay<[CoinListItem]>()
-    private let allFavoriteCoinList = BehaviorRelay<[CoinListItem]>(value: [])
+    private let coinList = PublishRelay<Set<CoinListItem>>()
+    private let favoriteCoinList = PublishRelay<Set<CoinListItem>>()
+    private let allCoinList = BehaviorRelay<Set<CoinListItem>>(value: [])
+    private let allFavoriteCoinList = BehaviorRelay<Set<CoinListItem>>(value: [])
 
     init(usecase: CoinListUsecaseProtocol) {
         self.usecase = usecase
+        fetchAllCoinList()
+        getAllFavoriteCoinList()
     }
     
     public struct Input {
@@ -42,7 +45,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
     
     public func transform(input: Input) -> Output {
         input.searchQuery.bind { query in
-            fetchList(query: query)
+            getCoinList(query: query)
             getFavoriteList(query: query)
         }.disposed(by: disposeBag)
         
@@ -68,11 +71,11 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
                       toastMessage: toastMessage.asObservable())
     }
     
-    internal func createCellData(coinList: [CoinListItem], allFavoriteCoinList: [CoinListItem], favoriteCoinList: [CoinListItem], tabType: TabButtonType, sort: SortType) -> [CoinListItemCellData] {
+    internal func createCellData(coinList: Set<CoinListItem>, allFavoriteCoinList: Set<CoinListItem>, favoriteCoinList: Set<CoinListItem>, tabType: TabButtonType, sort: SortType) -> [CoinListItemCellData] {
         switch tabType {
         case .market:
             let favoriteCoinSet = Set(favoriteCoinList.map { $0.symbol })
-            let sortedCoinList = sorted(coinList: coinList, sort: sort)
+            let sortedCoinList = sorted(coinList: Array(coinList), sort: sort)
             let coinListCellData: [CoinListItemCellData] = sortedCoinList.map { coin in
                 if favoriteCoinSet.contains(coin.symbol) {
                     return .init(isSelected: true, data: coin)
@@ -82,7 +85,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
             }
             return coinListCellData
         case .favorite:
-            let sortedFavoriteCoinList = sorted(coinList: favoriteCoinList, sort: sort)
+            let sortedFavoriteCoinList = sorted(coinList: Array(favoriteCoinList), sort: sort)
             return sortedFavoriteCoinList.map { .init(isSelected: true, data: $0) }
         }
     }
@@ -118,26 +121,44 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
         }
     }
     
-    private func fetchList(query: String) {
+    private func getCoinList(query: String) {
+        if query.isEmpty {
+            coinList.accept(allCoinList.value)
+        } else {
+            let result = allCoinList.value.filter { $0.symbol.contains(query.lowercased()) }
+            coinList.accept(result)
+        }
+    }
+    
+    private func fetchAllCoinList() {
         Task {
-            let result = await usecase.fetchList(query: query)
+            let result = await usecase.fetchList()
             switch result {
             case let .success(coinList):
-                self.coinList.accept(coinList)
+                allCoinList.accept(Set(coinList))
+                self.coinList.accept(Set(coinList))
             case let .failure(error):
                 self.error.accept(error.description)
                 
             }
         }
     }
+    
     private func getFavoriteList(query: String) {
-        let result = usecase.getFavoriteList(query: query)
+        if query.isEmpty {
+            favoriteCoinList.accept(allFavoriteCoinList.value)
+        } else {
+            let result = allFavoriteCoinList.value.filter { $0.symbol.contains(query.lowercased()) }
+            favoriteCoinList.accept(result)
+        }
+    }
+    
+    private func getAllFavoriteCoinList() {
+        let result = usecase.getFavoriteList()
         switch result {
         case let .success(coinList):
-            if query.isEmpty {
-                allFavoriteCoinList.accept(coinList)
-            }
-            self.favoriteCoinList.accept(coinList)
+            allFavoriteCoinList.accept(Set(coinList))
+            self.favoriteCoinList.accept(Set(coinList))
         case let .failure(error):
             self.error.accept(error.description)
         }

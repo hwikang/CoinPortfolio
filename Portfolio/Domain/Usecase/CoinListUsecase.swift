@@ -8,9 +8,9 @@
 import Foundation
 
 public protocol CoinListUsecaseProtocol {
-    func fetchList(query: String) async -> Result<[CoinListItem], NetworkError>
+    func fetchList() async -> Result<[CoinListItem], NetworkError>
     func saveFavorite(item: CoinListItem) -> Result<Bool, CoreDataError>
-    func getFavoriteList(query: String) -> Result<[CoinListItem], CoreDataError>
+    func getFavoriteList() -> Result<[CoinListItem], CoreDataError>
     func deleteFavoriteList(symbol: String) -> Result<Bool, CoreDataError>
     func resetFavoriteList() -> Result<Bool, CoreDataError>
 }
@@ -21,20 +21,16 @@ public struct CoinListUsecase: CoinListUsecaseProtocol {
         self.repository = repository
     }
 
-    public func fetchList(query: String) async -> Result<[CoinListItem], NetworkError> {
-        await repository.fetchList(query: query)
+    public func fetchList() async -> Result<[CoinListItem], NetworkError> {
+        await repository.fetchList()
     }
     
     public func saveFavorite(item: CoinListItem) -> Result<Bool, CoreDataError> {
         repository.saveFavorite(item: item)
     }
     
-    public func getFavoriteList(query: String) -> Result<[CoinListItem], CoreDataError> {
-        if query.isEmpty {
-            repository.getFavoriteList()
-        } else {
-            repository.getFavoriteList(query: query)
-        }
+    public func getFavoriteList() -> Result<[CoinListItem], CoreDataError> {
+        repository.getFavoriteList()
         
     }
     

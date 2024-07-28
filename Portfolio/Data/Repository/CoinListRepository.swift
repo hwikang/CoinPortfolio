@@ -14,8 +14,8 @@ public struct CoinListRepository: CoinListRepositoryProtocol {
         self.coreData = coreData
     }
     
-    public func fetchList(query: String) async -> Result<[CoinListItem], NetworkError> {
-        await network.fetchList(query: query)
+    public func fetchList() async -> Result<[CoinListItem], NetworkError> {
+        await network.fetchList()
     }
     
     public func saveFavorite(item: CoinListItem) -> Result<Bool, CoreDataError> {
