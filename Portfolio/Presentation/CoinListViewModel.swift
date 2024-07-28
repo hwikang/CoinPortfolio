@@ -169,7 +169,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
         switch result {
         case .success:
             toastMessage.accept("즐겨찾기 저장 완료")
-            getFavoriteList(query: "")
+            getAllFavoriteCoinList()
         case let .failure(error):
             self.error.accept(error.description)
         }
@@ -180,7 +180,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
         switch result {
         case .success:
             toastMessage.accept("즐겨찾기 해제 완료")
-            getFavoriteList(query: "")
+            getAllFavoriteCoinList()
         case let .failure(error):
             self.error.accept(error.description)
         }
@@ -191,7 +191,7 @@ public struct CoinListViewModel: CoinListViewModelProtocol {
         switch result {
         case .success:
             toastMessage.accept("즐겨찾기 일괄 해제 완료")
-            getFavoriteList(query: "")
+            getAllFavoriteCoinList()
         case let .failure(error):
             self.error.accept(error.description)
         }
